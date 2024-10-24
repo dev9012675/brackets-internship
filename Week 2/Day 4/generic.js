@@ -29,11 +29,16 @@ student = {
     grade: interface_1.Grade.Sophomore
 };
 students.push(student);
-/*console.log(students)
+/*
+console.log(students)
  // Filter by age
-console.log(filterBy<Student>(students , (s)=> s.age === 23))
+ console.log(filterBy<Student>(students , (s)=> s.age === 23))
  // Filter by address
-console.log(filterBy<Student>(students , (s)=> s.address === `Lahore`))
+console.log(filterBy<Student>(students , (s)=> s.address === `Gujranwala`))
+
+// Filter by grade
+console.log(filterBy<Student>(students , (s)=> s.grade === Grade.Senior))
+
 */
-// Filter by age
-console.log(filterBy(students, (s) => s.grade === interface_1.Grade.Sophomore));
+//Filter by sum of scores
+console.log(filterBy(students, (s) => s.scores.reduce((sum, current) => sum + current, 0) >= 410));
