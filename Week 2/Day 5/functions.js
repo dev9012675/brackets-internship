@@ -31,7 +31,8 @@ const updateProduct = (product, update) => {
         return product;
     }
     else {
-        return Object.assign(Object.assign(Object.assign({}, product), (typeof update.name !== "undefined" && { name: update.name })), (typeof update.price !== "undefined" && { price: update.price }));
+        const { name, price } = update;
+        return Object.assign(Object.assign(Object.assign({}, product), (typeof name !== "undefined" && { name: name })), (typeof price !== "undefined" && { price: price }));
     }
 };
 countCharacters("Hello");
@@ -39,6 +40,7 @@ console.log(greeting('Ali', 40));
 console.log(convertTemperature(102.5, 'C'));
 let product = { name: `HTC`, price: 500 };
 console.log(`${JSON.stringify(updateProduct(product, { price: 300 }))}`);
+product = { name: `Samsung`, price: 1000 };
 console.log(`${JSON.stringify(updateProduct(product, { name: 'Nokia', price: 300 }))}`);
 console.log(`${JSON.stringify(updateProduct(product, { name: `Nokia` }))}`);
 console.log(`${JSON.stringify(updateProduct(product, {}))}`);

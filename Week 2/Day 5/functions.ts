@@ -41,14 +41,16 @@ const convertTemperature = (temperature:number ,  convertTo:`C` |  `F`
 }
 
 const updateProduct = (product: Product, update?: { name?: string; price?: number }): Product => {
+    
     if ((typeof update === "undefined") ||
         (typeof update.name === "undefined" && typeof update.price === "undefined")) {
         return product;
     } else {
+        const {name , price} = update
         return {
             ...product,
-            ...(typeof update.name !== "undefined" && { name: update.name }),
-            ...(typeof update.price !== "undefined" && { price: update.price }),
+            ...(typeof name !== "undefined" && { name: name }),
+            ...(typeof price !== "undefined" && { price: price }),
         };
     }
 };
@@ -62,6 +64,8 @@ console.log(convertTemperature(102.5 , 'C'))
 let product:Product = {name: `HTC` , price:500}
 
 console.log(`${JSON.stringify(updateProduct(product , {price:300} ))}`)
+
+ product = {name: `Samsung` , price:1000}
 
 console.log(`${JSON.stringify(updateProduct(product , {name:'Nokia',price:300} ))}`)
 
