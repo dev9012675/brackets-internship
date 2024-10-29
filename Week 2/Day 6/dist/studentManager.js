@@ -118,20 +118,6 @@ class StudentManager {
             };
         });
     }
-    setStudentInfo(input) {
-        return __awaiter(this, void 0, void 0, function* () {
-            switch (input) {
-                case 1:
-                    return yield this.setPersonalInfo();
-                case 2:
-                    return yield this.setAddress();
-                case 3:
-                    return yield this.setEducation();
-                default:
-                    return yield this.setEmergencyContact();
-            }
-        });
-    }
     addStudent(name) {
         return __awaiter(this, void 0, void 0, function* () {
             let choice = ``;

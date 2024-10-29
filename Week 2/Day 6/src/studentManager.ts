@@ -155,23 +155,6 @@ export class StudentManager {
     };
   }
 
-  public async setStudentInfo(
-    input: number,
-  ): Promise<PersonalInfo | Address | StudentDetails | EmergencyContact> {
-    switch (input) {
-      case 1:
-        return await this.setPersonalInfo();
-
-      case 2:
-        return await this.setAddress();
-
-      case 3:
-        return await this.setEducation();
-      default:
-        return await this.setEmergencyContact();
-    }
-  }
-
   public async addStudent(name?: string): Promise<void> {
     let choice: string = ``;
     let progress: number = 1;
