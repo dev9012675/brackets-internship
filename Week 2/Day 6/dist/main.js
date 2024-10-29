@@ -34,24 +34,31 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                 yield manager.addMenu();
                 break;
             case 2:
-                manager.displayPersonalInfo();
+                if (manager.checkEmpty() === true)
+                    console.log(`No students currently present in system`);
+                else
+                    manager.displayPersonalInfo();
                 break;
             case 3:
-                tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
-                if (manager.hasStudent(tempName) === true) {
-                    yield manager.viewSingleStudentData(tempName);
-                }
+                if (manager.checkEmpty() === true)
+                    console.log(`No students currently present in system`);
                 else {
-                    console.log(`Student not found`);
+                    tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
+                    if (manager.hasStudent(tempName) === true)
+                        yield manager.viewSingleStudentData(tempName);
+                    else
+                        console.log(`Student not found`);
                 }
                 break;
             case 4:
-                tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
-                if (manager.hasStudent(tempName) === true) {
-                    yield manager.updateStudent(tempName);
-                }
+                if (manager.checkEmpty() === true)
+                    console.log(`No students currently present in system`);
                 else {
-                    console.log(`Student not found`);
+                    tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
+                    if (manager.hasStudent(tempName) === true)
+                        yield manager.updateStudent(tempName);
+                    else
+                        console.log(`Student not found`);
                 }
                 break;
             case 5:
@@ -61,12 +68,14 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                 yield manager.fetchData();
                 break;
             case 7:
-                tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
-                if (manager.hasStudent(tempName) === true) {
-                    manager.deleteStudent(tempName);
-                }
+                if (manager.checkEmpty() === true)
+                    console.log(`No students currently present in system`);
                 else {
-                    console.log(`Student not found`);
+                    tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
+                    if (manager.hasStudent(tempName) === true)
+                        manager.deleteStudent(tempName);
+                    else
+                        console.log(`Student not found`);
                 }
                 break;
             case 8:
