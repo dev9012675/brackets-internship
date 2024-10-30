@@ -14,7 +14,7 @@ const interfaces_1 = require("./interfaces");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const manager = new studentManager_1.StudentManager();
     console.log("Welcome to this Student Records Manager");
-    let tempName;
+    let tempEmail;
     let choice = -1;
     while (true) {
         console.log("Here are your options");
@@ -43,9 +43,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                 if (manager.checkEmpty() === true)
                     console.log(`No students currently present in system`);
                 else {
-                    tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
-                    if (manager.hasStudent(tempName) === true)
-                        yield manager.viewSingleStudentData(tempName);
+                    tempEmail = (yield (0, interfaces_1.ask)(`Enter email of student:`)).toLowerCase();
+                    if (manager.hasStudent(tempEmail) === true)
+                        yield manager.viewSingleStudentData(tempEmail);
                     else
                         console.log(`Student not found`);
                 }
@@ -54,9 +54,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                 if (manager.checkEmpty() === true)
                     console.log(`No students currently present in system`);
                 else {
-                    tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
-                    if (manager.hasStudent(tempName) === true)
-                        yield manager.updateStudent(tempName);
+                    tempEmail = (yield (0, interfaces_1.ask)(`Enter email of student:`)).toLowerCase();
+                    if (manager.hasStudent(tempEmail) === true)
+                        yield manager.updateStudent(tempEmail);
                     else
                         console.log(`Student not found`);
                 }
@@ -71,9 +71,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                 if (manager.checkEmpty() === true)
                     console.log(`No students currently present in system`);
                 else {
-                    tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
-                    if (manager.hasStudent(tempName) === true)
-                        manager.deleteStudent(tempName);
+                    tempEmail = (yield (0, interfaces_1.ask)(`Enter email of student:`)).toLowerCase();
+                    if (manager.hasStudent(tempEmail) === true)
+                        manager.deleteStudent(tempEmail);
                     else
                         console.log(`Student not found`);
                 }

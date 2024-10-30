@@ -2,6 +2,7 @@
   "devDependencies": {
     "@eslint/js": "^9.13.0",
     "@types/node": "^22.8.1",
+    "@types/validator": "^13.12.2",
     "@typescript-eslint/eslint-plugin": "^8.12.1",
     "@typescript-eslint/parser": "^8.12.1",
     "eslint": "^9.13.0",
@@ -13,5 +14,8 @@
   },
   "scripts": {
     "lint": "eslint"
+  },
+  "dependencies": {
+    "validator": "^13.12.0"
   }
 }

@@ -5,7 +5,7 @@ const main = async (): Promise<void> => {
   const manager = new StudentManager();
 
   console.log("Welcome to this Student Records Manager");
-  let tempName: string;
+  let tempEmail: string;
   let choice: number = -1;
   while (true) {
     console.log("Here are your options");
@@ -37,9 +37,9 @@ const main = async (): Promise<void> => {
         if (manager.checkEmpty() === true)
           console.log(`No students currently present in system`);
         else {
-          tempName = (await ask(`Enter name of student:`)).toLowerCase();
-          if (manager.hasStudent(tempName) === true)
-            await manager.viewSingleStudentData(tempName);
+          tempEmail = (await ask(`Enter email of student:`)).toLowerCase();
+          if (manager.hasStudent(tempEmail) === true)
+            await manager.viewSingleStudentData(tempEmail);
           else console.log(`Student not found`);
         }
 
@@ -49,9 +49,9 @@ const main = async (): Promise<void> => {
         if (manager.checkEmpty() === true)
           console.log(`No students currently present in system`);
         else {
-          tempName = (await ask(`Enter name of student:`)).toLowerCase();
-          if (manager.hasStudent(tempName) === true)
-            await manager.updateStudent(tempName);
+          tempEmail = (await ask(`Enter email of student:`)).toLowerCase();
+          if (manager.hasStudent(tempEmail) === true)
+            await manager.updateStudent(tempEmail);
           else console.log(`Student not found`);
         }
         break;
@@ -68,9 +68,9 @@ const main = async (): Promise<void> => {
         if (manager.checkEmpty() === true)
           console.log(`No students currently present in system`);
         else {
-          tempName = (await ask(`Enter name of student:`)).toLowerCase();
-          if (manager.hasStudent(tempName) === true)
-            manager.deleteStudent(tempName);
+          tempEmail = (await ask(`Enter email of student:`)).toLowerCase();
+          if (manager.hasStudent(tempEmail) === true)
+            manager.deleteStudent(tempEmail);
           else console.log(`Student not found`);
         }
         break;

@@ -1,4 +1,5 @@
 import { promises as fs } from "fs";
+import validator from "validator";
 import {
   PersonalInfo,
   Address,
@@ -26,8 +27,11 @@ export class StudentManager {
     this.cache = {};
   }
 
-  public hasStudent(name: string) {
-    return Object.prototype.hasOwnProperty.call(this.students, name);
+  public hasStudent(email: string) {
+    return (
+      Object.prototype.hasOwnProperty.call(this.students, email) ||
+      Object.prototype.hasOwnProperty.call(this.cache, email)
+    );
   }
 
   public async setGenericField(input: string): Promise<string> {
@@ -43,7 +47,15 @@ export class StudentManager {
     let gender: `Male` | `Female` | `Other`;
     let blood_group: string;
     let age: number;
+    let email: string;
     const name: string = (await this.setGenericField(`name`)).toLowerCase();
+    console.log("Please enter your email below.");
+    console.log(
+      "if you get prompted again, it means that either your email is not valid or already in use",
+    );
+    do {
+      email = (await ask("Enter your email:")).toLowerCase();
+    } while (!validator.isEmail(email) || this.hasStudent(email));
 
     do {
       userSelection = (
@@ -98,6 +110,7 @@ export class StudentManager {
 
     return {
       name: name,
+      email: email,
       age: age,
       gender: gender,
       martial_status: martial_status,
@@ -145,7 +158,7 @@ export class StudentManager {
   public async setEmergencyContact(): Promise<EmergencyContact> {
     const name: string = await this.setGenericField("Guardian Name");
     const relation: string = await this.setGenericField(
-      "your relation to the above mentioned Guardian",
+      "relation to the above mentioned Guardian",
     );
     const phone: string = await this.setGenericField("Guardian Phone No.");
     return {
@@ -229,12 +242,12 @@ export class StudentManager {
           details: details,
           emergencyInfo: emergencyInfo,
         };
-        this.students[student.info.name] = student;
+        this.students[student.info.email] = student;
         console.log(this.students);
         if (
-          Object.prototype.hasOwnProperty.call(this.cache, student.info.name)
+          Object.prototype.hasOwnProperty.call(this.cache, student.info.email)
         ) {
-          delete this.cache[student.info.name];
+          delete this.cache[student.info.email];
         }
         return;
       }
@@ -242,12 +255,12 @@ export class StudentManager {
   }
 
   public async cacheProgress(data: TempData, progress: number): Promise<void> {
-    this.cache[data.info.name] = { data, progress };
+    this.cache[data.info.email] = { data, progress };
     return;
   }
 
   public async addMenu(): Promise<void> {
-    let tempName: string;
+    let tempEmail: string;
     let choice: number = -1;
     while (true) {
       console.log("Here are your options");
@@ -268,12 +281,12 @@ export class StudentManager {
           if (Object.keys(this.cache).length === 0)
             console.log(`No students currently present in cache`);
           else {
-            tempName = (await ask(`Enter name of student:`)).toLowerCase();
+            tempEmail = (await ask(`Enter email of student:`)).toLowerCase();
             if (
-              Object.prototype.hasOwnProperty.call(this.cache, tempName) ===
+              Object.prototype.hasOwnProperty.call(this.cache, tempEmail) ===
               true
             )
-              await this.addStudent(tempName);
+              await this.addStudent(tempEmail);
             else console.log(`Student not found`);
           }
           break;
@@ -339,9 +352,9 @@ export class StudentManager {
 
       switch (choice) {
         case 1:
-          data["info"] = await this.setPersonalInfo();
           delete this.students[name];
-          this.students[data.info.name] = data;
+          data["info"] = await this.setPersonalInfo();
+          this.students[data.info.email] = data;
           return;
 
         case 2:
@@ -371,8 +384,8 @@ export class StudentManager {
     });
   }
 
-  public deleteStudent(name: string): void {
-    delete this.students[name];
+  public deleteStudent(email: string): void {
+    delete this.students[email];
     console.log(`Student deleted successfully`);
   }
 

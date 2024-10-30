@@ -13,6 +13,7 @@ const ask = (msg) => new Promise((resolve) => exports.rl.question(msg, (response
 exports.ask = ask;
 const emptyPersonalInfo = () => ({
     name: ``,
+    email: ``,
     age: 0,
     gender: ``,
     martial_status: ``,

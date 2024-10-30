@@ -12,6 +12,7 @@ export const ask = (msg: string): Promise<string> =>
 
 export interface PersonalInfo {
   name: string;
+  email: string;
   age: number;
   gender: `Male` | `Female` | `Other` | ``;
   martial_status: `Single` | `Married` | ``;
@@ -20,6 +21,7 @@ export interface PersonalInfo {
 
 export const emptyPersonalInfo = (): PersonalInfo => ({
   name: ``,
+  email: ``,
   age: 0,
   gender: ``,
   martial_status: ``,

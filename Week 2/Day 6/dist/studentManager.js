@@ -8,17 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentManager = void 0;
 const fs_1 = require("fs");
+const validator_1 = __importDefault(require("validator"));
 const interfaces_1 = require("./interfaces");
 class StudentManager {
     constructor() {
         this.students = {};
         this.cache = {};
     }
-    hasStudent(name) {
-        return Object.prototype.hasOwnProperty.call(this.students, name);
+    hasStudent(email) {
+        return (Object.prototype.hasOwnProperty.call(this.students, email) ||
+            Object.prototype.hasOwnProperty.call(this.cache, email));
     }
     setGenericField(input) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35,7 +40,13 @@ class StudentManager {
             let gender;
             let blood_group;
             let age;
+            let email;
             const name = (yield this.setGenericField(`name`)).toLowerCase();
+            console.log("Please enter your email below.");
+            console.log("if you get prompted again, it means that either your email is not valid or already in use");
+            do {
+                email = (yield (0, interfaces_1.ask)("Enter your email:")).toLowerCase();
+            } while (!validator_1.default.isEmail(email) || this.hasStudent(email));
             do {
                 userSelection = (yield (0, interfaces_1.ask)(`Enter gender of student(M for Male, F for Female , O for Other):`)).toLowerCase();
             } while (!(userSelection === `m` || userSelection === `f` || userSelection === `o`));
@@ -68,6 +79,7 @@ class StudentManager {
             } while (isNaN(age) || !(age >= 0 && age <= 100));
             return {
                 name: name,
+                email: email,
                 age: age,
                 gender: gender,
                 martial_status: martial_status,
@@ -109,7 +121,7 @@ class StudentManager {
     setEmergencyContact() {
         return __awaiter(this, void 0, void 0, function* () {
             const name = yield this.setGenericField("Guardian Name");
-            const relation = yield this.setGenericField("your relation to the above mentioned Guardian");
+            const relation = yield this.setGenericField("relation to the above mentioned Guardian");
             const phone = yield this.setGenericField("Guardian Phone No.");
             return {
                 name: name,
@@ -182,10 +194,10 @@ class StudentManager {
                         details: details,
                         emergencyInfo: emergencyInfo,
                     };
-                    this.students[student.info.name] = student;
+                    this.students[student.info.email] = student;
                     console.log(this.students);
-                    if (Object.prototype.hasOwnProperty.call(this.cache, student.info.name)) {
-                        delete this.cache[student.info.name];
+                    if (Object.prototype.hasOwnProperty.call(this.cache, student.info.email)) {
+                        delete this.cache[student.info.email];
                     }
                     return;
                 }
@@ -194,13 +206,13 @@ class StudentManager {
     }
     cacheProgress(data, progress) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.cache[data.info.name] = { data, progress };
+            this.cache[data.info.email] = { data, progress };
             return;
         });
     }
     addMenu() {
         return __awaiter(this, void 0, void 0, function* () {
-            let tempName;
+            let tempEmail;
             let choice = -1;
             while (true) {
                 console.log("Here are your options");
@@ -218,10 +230,10 @@ class StudentManager {
                         if (Object.keys(this.cache).length === 0)
                             console.log(`No students currently present in cache`);
                         else {
-                            tempName = (yield (0, interfaces_1.ask)(`Enter name of student:`)).toLowerCase();
-                            if (Object.prototype.hasOwnProperty.call(this.cache, tempName) ===
+                            tempEmail = (yield (0, interfaces_1.ask)(`Enter email of student:`)).toLowerCase();
+                            if (Object.prototype.hasOwnProperty.call(this.cache, tempEmail) ===
                                 true)
-                                yield this.addStudent(tempName);
+                                yield this.addStudent(tempEmail);
                             else
                                 console.log(`Student not found`);
                         }
@@ -281,9 +293,9 @@ class StudentManager {
                 } while (isNaN(choice) || !(choice >= 1 && choice <= 5));
                 switch (choice) {
                     case 1:
-                        data["info"] = yield this.setPersonalInfo();
                         delete this.students[name];
-                        this.students[data.info.name] = data;
+                        data["info"] = yield this.setPersonalInfo();
+                        this.students[data.info.email] = data;
                         return;
                     case 2:
                         data["address"] = yield this.setAddress();
@@ -308,8 +320,8 @@ class StudentManager {
             console.table(student.info);
         });
     }
-    deleteStudent(name) {
-        delete this.students[name];
+    deleteStudent(email) {
+        delete this.students[email];
         console.log(`Student deleted successfully`);
     }
     saveData() {
