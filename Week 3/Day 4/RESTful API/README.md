@@ -1,5 +1,57 @@
-# Services and Dependency Injection
 
-For this task, I have created a service using the @Injectable Decorator named StudentsService and injected it into StudentsController using Dependency Injection by injecting it into the StudentsController constructor . The
-endpoints I implemented in the previous lesson can now be used to get and store data temporarily because I am
-storing the POST request data into an array.The data vanishes as soon as program execution is stopped.
+# RESTful API
+
+For this task, I have expanded StudentsController to include all CRUD operations (GET, POST, PUT, DELETE). I have also integrated MongoDB via mongoose in this task such that the api endpoints Create , Fetch , Update and Delete data from the database. 
+
+
+## API Reference
+
+
+#### Create a student
+
+```http
+  POST /api/students
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `student`      | `Student` | **Required**. data of student to be created in the database |
+
+#### Get all students
+
+```http
+  GET /api/students
+```
+
+#### Get specific student
+
+```http
+  GET /api/students/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id of student to fetch |
+
+#### Update a student
+
+```http
+  PUT /api/students/${id}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id of student to update |
+| `student`      | `Partial<Student>` | **Required**. data of student to be updated |
+
+#### Delete a student
+
+```http
+  DELETE /api/students/${id}
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id`      | `string` | **Required**. Id of student to delete |
+
+
+
