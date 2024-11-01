@@ -1,7 +1,7 @@
 
-# RESTful API
+# Input Validation with DTOs
 
-For this task, I have expanded StudentsController to include all CRUD operations (GET, POST, PUT, DELETE). I have also integrated MongoDB via mongoose in this task such that the api endpoints Create , Fetch , Update and Delete data from the database. 
+For this task, I have created DTOs to validate incoming data using class-validator and class-transformer, I have also changed the student schema definition to include interfaces as types. The interfaces are in src/students/student.interfaces.ts while the DTOs are in the src/students/dto directory.
 
 
 ## API Reference
