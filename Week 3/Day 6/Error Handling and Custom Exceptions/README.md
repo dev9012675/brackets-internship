@@ -1,7 +1,8 @@
 
-# Input Validation with DTOs
+# Error Handling and Custom Exceptions
 
-For this task, I have created DTOs to validate incoming data using class-validator and class-transformer, I have also changed the student schema definition to include interfaces as types. The interfaces are in src/students/student.interfaces.ts while the DTOs are in the src/students/dto directory.
+For this task I have created a Custom Exception Filter in ValidationExceptionFilter.ts located in the src directory. I am using this filter in the update and create method in the Students Controller. I have also
+implemented simple error handling in the rest of the controller methods via the NestJS built in Global Exception Filter.
 
 
 ## API Reference
