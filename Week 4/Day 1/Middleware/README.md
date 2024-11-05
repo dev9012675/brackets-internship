@@ -1,8 +1,9 @@
 
 # Error Handling and Custom Exceptions
 
-For this task I have created a Custom Exception Filter in ValidationExceptionFilter.ts located in the src directory. I am using this filter in the update and create method in the Students Controller. I have also
-implemented simple error handling in the rest of the controller methods via the NestJS built in Global Exception Filter.
+For this task I have created two middleware functions in src/middleware/logger.middleware.ts. I have bound the 
+globalLogger middleware to all the routes in the application whereas specificLogger is only bound to the 
+POST /api/students and   PUT /api/students/${id} routes.
 
 
 ## API Reference
