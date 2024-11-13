@@ -40,6 +40,12 @@ This guard verifies that a user is logged in/authenticated and has the appropria
 This guard is used in the refresh route of the auth API to determine if a valid Refresh Token is present.
 
 
+#### Testing
+
+I have written unit tests for the Books Controller and Books Service in the books.controller.spec
+and books.service.spec files respectively using Jest. In the books.controller.spec file, I wrote unit tests by mocking functions of the Books Service. I have also tested this API using Postman.
+
+
 
 ## API Reference
 
