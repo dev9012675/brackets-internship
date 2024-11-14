@@ -1,4 +1,4 @@
-#### Testing RESTful APIs
+# Testing RESTful APIs
 
 I have written unit tests for the Books Controller and Books Service in the books.controller.spec
 and books.service.spec files respectively using Jest. In the books.controller.spec file, I wrote unit tests by mocking functions of the Books Service. I have also tested this API using Postman.
