@@ -1,46 +1,4 @@
-
-# Library Management API
-
-For this task I have created CRUD endpoints for books and implemented pagination. The relevant files are present in src/books. I have also created the following pipes for validating and transforming data.
-
-#### ParsePaginationPipe
-
-Located in src/pipes/parse-pagination.pipe.ts.This pipe is used to convert pagination data(page and limit) from string to integers. This pipe is being used in the findMultiple() method in the Books controller.
-
-#### ValidateId
-
-Located in src/pipes/validate-id.pipe.ts.This pipe is used to check if the id passed by a client is a valid MongoDB id. If the id is valid , the request proceeds to the controller. Otherwise, an exception is thrown.This pipe is being used in the findOne() , update() and remove() methods in the Books controller.
-
-I am also using the built in nest validation pipe to make sure only valid data gets saved to the database.I have also created the following Exception Filters.
-
-
-#### GlobalFilter
-
-Located in src/exception-filters/globalFilter.filter.ts.This global filter catches every type of exception.
-
-#### NotFoundFilter
-      
-Located in src/exception-filters/NotFound.filter.ts.This filter only catches exceptions thrown using NotFoundException. This filter is only bound to the findOne() , update() and remove() methods in the Books controller.
-
-I  have also customized an HTTP response using NestJS's HttpException class in the implementation of the ValidateId pipe.
-
-I have also created the following guards for Authentication.
-
-#### JwtAuthGuard
-
-This guard verifies that a user is logged in/authenticated before accessing a route.
-
-#### RolesGuard
-
-This guard verifies that a user is logged in/authenticated and has the appropriate role before accessing a route. There are two roles:user and admin. If a role is not specified during user signup, the user is assigned the user role. To create an admin user, the role has to be set to "admin" during signup.
-
-
-#### RefreshAuthGuard
-
-This guard is used in the refresh route of the auth API to determine if a valid Refresh Token is present.
-
-
-#### Testing
+#### Testing RESTful APIs
 
 I have written unit tests for the Books Controller and Books Service in the books.controller.spec
 and books.service.spec files respectively using Jest. In the books.controller.spec file, I wrote unit tests by mocking functions of the Books Service. I have also tested this API using Postman.
