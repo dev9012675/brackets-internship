@@ -233,7 +233,7 @@ db.users.createIndex({tags:1 , age:1})
 ```
 
 
-Note the value of **totalDocsExamined** is 6 and **nReturned** is also 6. Suggesting that MongoDB only had to examine 6 documents in this case. Without the indexes, MongoDB had to scan all the documents in the collection. With the index, MongoDB is able to determine which documents match the specified filter. The stage attribute in the executionStages object has the value **IXSCAN** which indicates that MongoDB used indexes to find the documents.
+Note the value of **totalDocsExamined** is 8 and **nReturned** is 6. Suggesting that MongoDB had to check 8 documents and returned the 6 which matched the provided filter.
 
 ## Get the firstName , lastName and joinDate of the user who most recently joined
 
@@ -307,7 +307,9 @@ The above query will return only a single document yet MongoDB scans the entire 
 
 I have created the following index on the joinDate property.
 
+```
 db.users.createIndex({joinDate:1})
+```
 
 ### After Index
 
