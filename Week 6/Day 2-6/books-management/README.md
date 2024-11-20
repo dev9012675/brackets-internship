@@ -7,3 +7,7 @@ For this day's task, I created an AuthorSchema.I have created a one to many rela
 POST requests for books and authors. For the GET request endpoints, I am using populate to fetch related data.
 
 
+## Week 6:Day 3
+
+For this day's task, I added a delete method and delete endpoint to the service and controller of Authors as well as Books. I have implemented delete such that if a book or author is deleted, any references to the deleted
+resource are also deleted.
