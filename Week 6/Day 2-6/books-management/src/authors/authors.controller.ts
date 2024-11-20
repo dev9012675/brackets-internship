@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post , Put, UsePipes , ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post , Put, UsePipes , ValidationPipe } from '@nestjs/common';
 import { CreateAuthorDTO } from 'src/authors/dtos/CreateAuthorDTO';
 import { AuthorsService } from './authors.service';
 import { UpdateAuthorDTO } from './dtos/UpdateAuthorDTO';
@@ -45,5 +45,10 @@ export class AuthorsController {
         @Get(`:id`)
         async findOne(@Param(`id`) id:string){
             return this.authorService.findOne(id)
+        }
+
+        @Delete(`:id`)
+        async remove(@Param(`id`) id:string) {
+          return this.authorService.remove(id)
         }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post , Put, UsePipes , ValidationPipe , Get } from '@nestjs/common';
+import { Body, Controller, Param, Post , Put, UsePipes , ValidationPipe , Get , Delete } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDTO } from './dtos/CreateBookDTO';
 import { UpdateBookDTO } from './dtos/UpdateBookDTO';
@@ -39,5 +39,10 @@ export class BooksController {
         @Get(`:id`)
         async findOne(@Param(`id`) id:string){
             return this.booksService.findOne(id)
+        }
+
+        @Delete(`:id`)
+        async remove(@Param(`id`) id:string) {
+          return this.booksService.remove(id)
         }
 }

@@ -35,7 +35,7 @@ export class BooksService {
             await session.commitTransaction();
             session.endSession();
     
-            return "Book created successfully"
+            return {message:"Book created successfully"}
         } catch (error) {
             await session.abortTransaction();
             session.endSession();
@@ -96,5 +96,18 @@ export class BooksService {
 
     async findOne(id:string) {
        return await this.bookModel.findById(id).populate(`author`)
+    }
+
+    async remove(id:string) {
+        const book = await this.bookModel.findById(id)
+        if(!book){
+            throw new NotFoundException("Book not found")
+        }
+        await this.authorModel.updateOne({_id:book.author} ,
+            {$pull:{books:book._id}} 
+        )
+        await book.deleteOne()
+        return {message:"Book deleted successfully"}
+
     }
 }
