@@ -107,6 +107,15 @@ export class BooksService {
        return await this.bookModel.findById(id).populate(`authors`)
     }
 
+    async countByGenre(){
+        return await this.bookModel.aggregate([
+            {$unwind:"$genres"} ,
+            {$group:{_id:"$genres" , count:{$sum:1}}} ,
+            {$project:{_id:false ,genre:"$_id" , count:1}}
+
+        ])
+    }
+
       
 
     async remove(id:string) {

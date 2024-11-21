@@ -48,10 +48,17 @@ export class BooksController {
              return this.booksService.findAll(search)
         }
 
+        @Get(`count`)
+        async countByGenre(){
+          return this.booksService.countByGenre()
+        }
+
         @Get(`:id`)
         async findOne(@Param(`id`) id:string){
             return this.booksService.findOne(id)
         }
+
+     
 
          
         @Delete(`:id`)
