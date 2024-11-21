@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateBookDTO } from './dtos/CreateBookDTO';
 import { Author } from 'src/authors/author.schema';
 import { UpdateBookDTO } from './dtos/UpdateBookDTO';
+import { SearchDTO } from './dtos/SearchDTO';
 
 @Injectable()
 export class BooksService {
@@ -17,16 +18,16 @@ export class BooksService {
         
         try {
            
-            const author = await this.authorModel.findById(book.author).session(session);
-            if (!author) {
+            const validAuthors = await this.authorModel.find({ '_id': { $in: book.authors } });
+            if (!validAuthors || validAuthors.length !== book.authors.length) {
                 throw new NotFoundException("Author not found");
             }
     
             const createdBook = new this.bookModel(book);
             const savedBook = await createdBook.save({ session });
      
-            await this.authorModel.updateOne(
-                { _id: book.author },
+            await this.authorModel.updateMany(
+                { _id: {$in:book.authors} },
                 { $addToSet: { books: savedBook._id } },
                 { session } 
             );
@@ -43,28 +44,30 @@ export class BooksService {
         }
     }
 
+
+
     async update(id:string , book:UpdateBookDTO){
-        if(typeof book.author !== `undefined`){
+        if(typeof book.authors !== `undefined`){
             const session = await this.bookModel.db.startSession();
             session.startTransaction();
             try {
                 const bookToBeUpdated = await this.bookModel.findById(id).session(session);
-                const author = await this.authorModel.findById(book.author).session(session);
+                const authors = await this.authorModel.find({ '_id': { $in: book.authors } }).session(session);
                 if(!book)
                 {
                     throw new NotFoundException("Book not found");
                 }
-                if (!author) {
+                if (!authors || authors.length !== book.authors.length) {
                     throw new NotFoundException("Author not found");
                 }
-                await this.authorModel.updateOne({_id:bookToBeUpdated.author} ,
+                await this.authorModel.updateMany({ _id: {$in:bookToBeUpdated.authors} } ,
                     {$pull:{books:bookToBeUpdated._id}} , {session}
                 )
 
                 const updatedBook =  await this.bookModel.findByIdAndUpdate(id , book , {new:true} ).session(session)
          
-                await this.authorModel.updateOne(
-                    { _id: book.author },
+                await this.authorModel.updateMany(
+                    { _id: {$in:book.authors} },
                     { $addToSet: { books: updatedBook._id } },
                     { session } 
                 );
@@ -89,25 +92,34 @@ export class BooksService {
         }
 
     }
+      
 
-    async findAll(){
-        return await this.bookModel.find().populate(`author`)
+    async findAll(searchDTO:SearchDTO){
+        if(typeof searchDTO.search !== `undefined`) {
+            return await this.bookModel.find({$text:{$search: searchDTO.search}}).populate(`authors`)
+        }
+        else {
+        return await this.bookModel.find().populate(`authors`)
+        }
     }
 
     async findOne(id:string) {
-       return await this.bookModel.findById(id).populate(`author`)
+       return await this.bookModel.findById(id).populate(`authors`)
     }
+
+      
 
     async remove(id:string) {
         const book = await this.bookModel.findById(id)
         if(!book){
             throw new NotFoundException("Book not found")
         }
-        await this.authorModel.updateOne({_id:book.author} ,
+        await this.authorModel.updateMany({ _id: {$in:book.authors} }  ,
             {$pull:{books:book._id}} 
         )
         await book.deleteOne()
         return {message:"Book deleted successfully"}
 
     }
+        
 }

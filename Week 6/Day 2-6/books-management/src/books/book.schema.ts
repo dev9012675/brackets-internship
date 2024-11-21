@@ -8,13 +8,16 @@ export type BookDocument = HydratedDocument<Book>;
 
 @Schema({timestamps:true})
 export class Book {
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true , minlength:1 })
   title: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Author'})
-  author: string;
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Author' , default: []}])
+  authors: mongoose.Schema.Types.ObjectId[]
 
-  @Prop({ type: String , required: true })
+  @Prop({ type: String, required: true , minlength:1 })
+  description: string;
+
+  @Prop({ type: String , required: true , minlength:1  })
   publisher: string
 
   @Prop({ type: Number, required: true, min: 1 })
@@ -31,3 +34,8 @@ export class Book {
 }
 
 export const BookSchema = SchemaFactory.createForClass(Book);
+
+BookSchema.index({
+  title: "text" ,
+  description: "text"
+})

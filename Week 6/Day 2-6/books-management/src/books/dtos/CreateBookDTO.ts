@@ -7,6 +7,7 @@ import {
     Min,
     IsIn,
     IsISBN,
+    IsMongoId,
   } from 'class-validator';
   import { genres } from 'src/books/book.schema';
   export type Genres = (typeof genres)[number];
@@ -17,8 +18,12 @@ import {
     title: string;
   
     @IsNotEmpty()
+    @IsMongoId({each:true})
+    authors: string[];
+
+    @IsNotEmpty()
     @IsString()
-    author: string;
+    description: string;
 
     @IsNotEmpty()
     @IsString()

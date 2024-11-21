@@ -25,7 +25,7 @@ export class AuthorsService {
 
     async update(id:string , authorData:UpdateAuthorDTO) {
         try {
-            return await this.authorModel.findByIdAndUpdate(id , authorData , {new:true})
+            return await this.authorModel.findByIdAndUpdate(id , authorData , {new:true , runValidators:true})
         }
         catch(e){
             throw new Error(`Failed to update author: ${e.message}`);
@@ -46,7 +46,9 @@ export class AuthorsService {
         if(!author) {
             throw new NotFoundException("Author not found")
         }
-        await this.bookModel.deleteMany({author:id})
+        await this.bookModel.updateMany({ _id: {$in:author.books} }  ,
+            {$pull:{authors:author._id}} 
+        )
         await author.deleteOne()
         return {
             message:"Author deleted successfully"

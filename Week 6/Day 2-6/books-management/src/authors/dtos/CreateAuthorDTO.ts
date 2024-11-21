@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsString } from "class-validator";
+import { IsDateString, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateAuthorDTO {
 
@@ -13,6 +13,14 @@ export class CreateAuthorDTO {
     @IsNotEmpty()
     @IsDateString()
     dateOfBirth: Date
+
+    @IsOptional()
+    @IsDateString()
+    dateOfDeath?: Date
+
+    @IsNotEmpty()
+    @IsString()
+    biography:string
 
     @IsNotEmpty()
     @IsString()

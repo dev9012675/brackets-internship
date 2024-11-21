@@ -15,6 +15,14 @@ export class UpdateAuthorDTO {
     dateOfBirth?: Date
 
     @IsOptional()
+    @IsDateString()
+    dateOfDeath?: Date
+
+    @IsOptional()
+    @IsString()
+    biography?:string
+
+    @IsOptional()
     @IsString()
     country?:string
 
