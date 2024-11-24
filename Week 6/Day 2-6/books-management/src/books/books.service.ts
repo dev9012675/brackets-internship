@@ -51,7 +51,7 @@ export class BooksService {
         {
             throw new NotFoundException("Book not found");
         }
-        if(book.authors !== null && book.authors.length !== 0 ){
+        if(typeof book.authors !== `undefined` ){
             const session = await this.bookModel.db.startSession();
             session.startTransaction();
             try {
