@@ -45,7 +45,7 @@ export class BooksController {
           }),
         )
         async findAll(@Query() search:SearchDTO){
-             return this.booksService.findAll(search)
+             return this.booksService.findMultiple(search)
         }
 
         @Get(`count`)

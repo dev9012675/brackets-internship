@@ -1,6 +1,6 @@
 import {
     IsArray,
-    IsDateString,
+    IsDate,
     IsNumber,
     IsString,
     Min,
@@ -9,7 +9,8 @@ import {
     IsOptional,
     IsMongoId,
   } from 'class-validator';
-  import { genres } from 'src/books/book.schema';
+  import { Transform } from 'class-transformer';
+  import { genres } from '../book.schema';
   export type Genres = (typeof genres)[number];
   
   export class UpdateBookDTO {
@@ -41,7 +42,8 @@ import {
     genres?: Genres[];
   
     @IsOptional()
-    @IsDateString()
+    @Transform(({ value }) => value ? new Date(value) : value)  
+    @IsDate()
     publishedDate?: Date;
   
     @IsOptional()

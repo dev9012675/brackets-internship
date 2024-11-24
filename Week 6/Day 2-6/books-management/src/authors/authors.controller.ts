@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post , Put, UsePipes , ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post , Put, Query, UsePipes , ValidationPipe } from '@nestjs/common';
 import { CreateAuthorDTO } from 'src/authors/dtos/CreateAuthorDTO';
 import { AuthorsService } from './authors.service';
 import { UpdateAuthorDTO } from './dtos/UpdateAuthorDTO';
+import { AuthorSearchDTO } from './dtos/AuthorSearchDTO';
 
 @Controller('api/authors')
 export class AuthorsController {
@@ -29,17 +30,21 @@ export class AuthorsController {
           }),
         )
         async update( @Param(`id`) id:string, @Body() author:UpdateAuthorDTO) {
-          const updatedAuthor = await this.authorService.update(id , author)
-          if(!updatedAuthor) {
-            throw new NotFoundException("Author not found")
-          }
-          return updatedAuthor
+          return  await this.authorService.update(id , author)
+        
   
         }
 
         @Get()
-        async findAll(){
-             return this.authorService.findAll()
+        @UsePipes(
+          new ValidationPipe({
+            transform: true,
+            whitelist: true,
+            forbidNonWhitelisted: true,
+          }),
+        )
+        async findAll(@Query() authorSearch:AuthorSearchDTO){
+             return this.authorService.findMultiple(authorSearch)
         }
 
         @Get(`:id`)

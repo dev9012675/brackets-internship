@@ -1,4 +1,5 @@
-import { IsDateString, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsDate,  IsOptional, IsString } from "class-validator";
+import { Transform } from "class-transformer";
 
 export class UpdateAuthorDTO {
 
@@ -11,11 +12,13 @@ export class UpdateAuthorDTO {
     lastName?:string
 
     @IsOptional()
-    @IsDateString()
+    @Transform(({ value }) => value ? new Date(value) : value)  
+    @IsDate()
     dateOfBirth?: Date
 
     @IsOptional()
-    @IsDateString()
+    @Transform(({ value }) => value ? new Date(value) : value)  
+    @IsDate()
     dateOfDeath?: Date
 
     @IsOptional()

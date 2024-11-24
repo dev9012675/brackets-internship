@@ -1,10 +1,11 @@
 import {  Injectable, NotFoundException } from '@nestjs/common';
-import { Author } from 'src/authors/author.schema';
+import { Author } from './author.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateAuthorDTO } from 'src/authors/dtos/CreateAuthorDTO';
+import { CreateAuthorDTO } from './dtos/CreateAuthorDTO';
 import { UpdateAuthorDTO } from './dtos/UpdateAuthorDTO';
-import { Book } from 'src/books/book.schema';
+import { Book } from '../books/book.schema';
+import { AuthorSearchDTO } from './dtos/AuthorSearchDTO';
 
 @Injectable()
 export class AuthorsService {
@@ -19,41 +20,104 @@ export class AuthorsService {
                 message:"Author created successfully"
             }
           } catch (err) {
-            throw new Error(`Failed to create author: ${err.message}`);
+            throw err
           }
     }
 
     async update(id:string , authorData:UpdateAuthorDTO) {
         try {
-            return await this.authorModel.findByIdAndUpdate(id , authorData , {new:true , runValidators:true})
+            const author = await this.authorModel.findByIdAndUpdate(id , authorData , {new:true , runValidators:true})
+            if(!author){
+                throw new NotFoundException("Author not found")
+            }
+            return {
+                message:"Author updated successfully" ,
+                data:author
+            }
         }
-        catch(e){
-            throw new Error(`Failed to update author: ${e.message}`);
+        catch(error){
+            throw error
         }
 
     }
 
-    async findAll(){
-        return await this.authorModel.find().populate(`books`)
+    async findMultiple(authorSearch:AuthorSearchDTO){
+        try {
+        const countryQuery = authorSearch.country ? {country:authorSearch.country}: {}
+        const nameQuery =authorSearch.search ? {$or:[{firstName:{$regex:`${authorSearch.search}` , $options:`i`}}, 
+        {lastName:{$regex:`${authorSearch.search}` , $options:`i`}}]}:{}
+        const query = {...countryQuery , ...nameQuery}
+        let message = "Authors fetched successfully" 
+        const authors = await this.authorModel.aggregate([
+            {
+                $match: query
+            } ,
+            {
+               $lookup : {
+                     from: "books" ,
+                     localField:"books" ,
+                     foreignField: `_id` ,
+                     as: "books_data"
+
+
+
+               }
+            }
+        ])
+        if(authors.length === 0) {
+            message = "No Authors found"
+        }
+        return {
+            message:message ,
+            data:authors
+        }
+        } catch(error){
+            throw error
+        }
     }
 
     async findOne(id:string) {
-       return await this.authorModel.findById(id).populate(`books`)
+        try {
+        const author = await this.authorModel.findById(id).populate(`books`)
+        if(!author){
+            throw new NotFoundException(`Author not Found`)
+        }
+        return {
+            message: "Author fetched successfully" ,
+            data:author
+        }
+        } catch(error){
+             throw error
+        }
     }
 
     async remove(id:string) {
-        const author = await this.authorModel.findById(id)
+        const session = await this.authorModel.db.startSession()
+        session.startTransaction()
+        try{
+        const author = await this.authorModel.findById(id).session(session)
         if(!author) {
             throw new NotFoundException("Author not found")
         }
         await this.bookModel.updateMany({ _id: {$in:author.books} }  ,
-            {$pull:{authors:author._id}} 
+            {$pull:{authors:author._id}} , {session}
         )
-        await author.deleteOne()
+        await author.deleteOne().session(session)
+        await session.commitTransaction();
         return {
             message:"Author deleted successfully"
         }
 
         
+     }
+    
+    catch(error) {
+        await session.abortTransaction();
+        throw error
     }
+    finally {
+      await session.endSession()
+    }
+
+}
 }

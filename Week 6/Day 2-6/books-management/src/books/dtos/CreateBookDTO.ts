@@ -8,8 +8,10 @@ import {
     IsIn,
     IsISBN,
     IsMongoId,
+    IsDate
   } from 'class-validator';
-  import { genres } from 'src/books/book.schema';
+  import { Transform } from 'class-transformer';
+  import { genres } from '../book.schema';
   export type Genres = (typeof genres)[number];
   
   export class CreateBookDTO {
@@ -41,7 +43,8 @@ import {
     genres: Genres[];
   
     @IsNotEmpty()
-    @IsDateString()
+    @Transform(({ value }) => value ? new Date(value) : value)  
+    @IsDate()
     publishedDate: Date;
   
     @IsNotEmpty()
