@@ -1,3 +1,3 @@
-# Stripe Payments and Webhooks
+# Error Handling and Rate Limiting with NestJS
 
 In this task, I have implemented rate limiting using **@nestjs/throttler** on each endpoint of the application. Using rate limiting prevents denial of service attacks. I have also created an exception filter for displaying errors located in src/exception-filters/globalFilter.ts. This exception filter is applied on each endpoint in this application allowing for uniform error response format.
