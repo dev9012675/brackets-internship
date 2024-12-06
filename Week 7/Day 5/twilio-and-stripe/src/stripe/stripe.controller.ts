@@ -30,8 +30,11 @@ export class StripeController {
     async createSubscription(@Body() subscription:CreateSubscriptionDTO ){
         return await this.stripeService.createSubscripton(subscription)
        
-        
+    }
 
+    @Post(`/webhook`)
+    async handleWebhook(@Req() req:RawBodyRequest<Request>){
+        return this.stripeService.handleWebHook(req)
     }
 
     

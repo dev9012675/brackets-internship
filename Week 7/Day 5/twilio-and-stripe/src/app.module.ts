@@ -6,7 +6,7 @@ import { ConfigModule , ConfigService} from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [StripeModule , ConfigModule.forRoot({
+  imports: [ StripeModule  , ConfigModule.forRoot({
     isGlobal:true
   }) , MongooseModule.forRootAsync({
     imports: [ConfigModule],

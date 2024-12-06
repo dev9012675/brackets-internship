@@ -6,6 +6,10 @@ export type CustomerDocument = HydratedDocument<Customer>;
 
 @Schema()
 export class Customer {
+
+  @Prop({required:true})
+  name: string;
+
   @Prop({unique:true , required:true})
   email: string;
 
@@ -16,7 +20,16 @@ export class Customer {
   phone: string;
 
   @Prop()
-  subscriptionId:string
+  subscriptionId?:string
+
+  @Prop()
+  subscriptionStatus?:string
+
+  @Prop()
+  priceId?:string
+
+  @Prop()
+  startDate?:Date
 
  
 }
